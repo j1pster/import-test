@@ -11,6 +11,10 @@ class JsonFileImporter implements FileImporter
         $file = file_get_contents($filePath, 'r');
         $data = json_decode($file, true);
 
+        if($data === null) {
+            throw new \InvalidArgumentException('Invalid JSON file.');
+        }
+
         return $data ?? [];
     }
 }
