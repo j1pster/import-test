@@ -38,9 +38,8 @@ class ProcessImportData implements ShouldQueue
      */
     public function handle(): void
     {
-
         $records = array_map(function ($row) {
-            $this->processRow($row);
+            return $this->processRow($row);
         }, $this->data);
 
         DB::transaction(function () use ($records) {
@@ -49,6 +48,8 @@ class ProcessImportData implements ShouldQueue
     }
 
     public function processRow($row) {
+        $row['import_id'] = $this->import->id;
+
         $creditCard = $row['credit_card'];
 
         $row['credit_card_name'] = $creditCard['name'];

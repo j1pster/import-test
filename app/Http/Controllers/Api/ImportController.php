@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\FileImporter;
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessImportData;
+use App\Models\Import;
 use Illuminate\Http\Request;
-use App\Services\FileImporter\JsonFileImporter;
+use Illuminate\Support\Facades\Storage;
 
 class ImportController extends Controller
 {
@@ -22,7 +24,31 @@ class ImportController extends Controller
      */
     public function store(Request $request, FileImporter $fileImporter)
     {
-        //TODO: implement store method.
+        $request->validate([
+            'file' => 'required|file|mimes:json'
+        ]);
+
+        $file = $request->file('file');
+        $folderPath = 'uploads/' . date('Y') . '/' . date('m');
+        $fileName = $file->getClientOriginalName() . '-' . time() . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs($folderPath, $fileName);
+
+        $import = Import::create([
+            'name' => $file->getClientOriginalName(),
+            'path' => $filePath,
+            'status' => 'processing'
+        ]);
+
+        $data = $fileImporter->import(storage_path('app/' . $filePath));
+
+        $chunks = array_chunk($data, 1000);
+
+        foreach ($chunks as $chunk) {
+
+            ProcessImportData::dispatch($import, $chunk);
+        }
+
+        return $import;
     }
 
     /**

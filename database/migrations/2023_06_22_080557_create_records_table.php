@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('account')->nullable();
             $table->string('address')->nullable();
-            $table->timestamp('birthday')->nullable();
+            $table->string('date_of_birth')->nullable();
             $table->boolean('checked')->default(false);
             $table->string('email')->nullable();
-            $table->interest('interest')->nullable();
+            $table->string('interest')->nullable();
             $table->string('phone')->nullable();
+            $table->text('description')->nullable();
             
             $table->string('credit_card_number')->nullable();
             $table->string('credit_card_type')->nullable();

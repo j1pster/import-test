@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name');
-            $table->string('file_path');
-            $table->integer('amount_of_jobs');
-            $table->integer('succesful_jobs');
+            $table->string('name');
+            $table->string('path');
             $table->string('status');
             $table->timestamps();
         });
