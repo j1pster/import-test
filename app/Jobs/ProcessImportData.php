@@ -11,10 +11,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use App\Traits\RecordValidation;
+use Illuminate\Support\Facades\Validator;
 
 class ProcessImportData implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, RecordValidation;
 
     protected $import;
     protected $data;
@@ -38,13 +40,27 @@ class ProcessImportData implements ShouldQueue
      */
     public function handle(): void
     {
-        $records = array_map(function ($row) {
-            return $this->processRow($row);
-        }, $this->data);
-
-        DB::transaction(function () use ($records) {
-            Record::insert($records);
+        DB::transaction(function () {
+            foreach($this->data as $row) {
+                $validated = $this->validate($row);
+                if(!$validated) {
+                    continue;
+                }
+                $processed = $this->processRow($validated);
+                Record::create($processed);
+            }
         });
+    }
+
+    public function validate($row) {
+        $rules = $this->recordRules();
+        $validator = Validator::make($row, $rules);
+
+        if ($validator->fails()) {
+            return false;
+        }
+
+        return $validator->validated();
     }
 
     public function processRow($row) {

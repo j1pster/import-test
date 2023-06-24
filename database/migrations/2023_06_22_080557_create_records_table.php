@@ -23,10 +23,10 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('description')->nullable();
             
-            $table->string('credit_card_number')->nullable();
-            $table->string('credit_card_type')->nullable();
-            $table->string('credit_card_name')->nullable();
-            $table->string('credit_card_expiration_date')->nullable();
+            $table->string('credit_card_number');
+            $table->string('credit_card_type');
+            $table->string('credit_card_name');
+            $table->string('credit_card_expiration_date');
 
             $table->unsignedBigInteger('import_id')->references('id')->on('imports');
             $table->timestamps();

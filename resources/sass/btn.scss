@@ -1,0 +1,68 @@
+.btn, a.btn {
+    @extend .t-btn;
+
+    background: $c-blue;
+    border-radius: 2px;
+    padding: 7px 15px 5px;
+    height: 29px;
+    border: 1px solid transparent;
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    inline-size: fit-content;
+
+    &--big {
+        @extend .t-btn-big;
+        height: 45px;
+        min-width: 124px;
+    }
+
+    &--white {
+        color: $c-blue;
+        background: #FFF;
+        border: 1px solid #eff3f7;
+    }
+
+    &--off {
+        color: $c-grey;
+        background: none;
+        border: 1px solid #eff3f7;
+    }
+
+    &--aside {
+        width: 60px; // prevent "Save" to "Saved ✓" jump
+    }
+
+    &--success {
+        color: $c-green;
+        background: none;
+        border: 1px solid $c-green;
+    }
+
+    &--all-off {
+        color: $c-grey;
+        background: none;
+    }
+
+    &--disabled {
+        @extend .btn--off;
+        pointer-events: none;
+    }
+
+    &--error {
+        border: 1px solid $c-red;
+    }
+
+    &--danger {
+        background: $c-red;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+        outline: none;
+        opacity: 0.9;
+    }
+}

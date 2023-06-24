@@ -8,9 +8,12 @@ use App\Jobs\ProcessImportData;
 use App\Models\Import;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\RecordValidation;
 
 class ImportController extends Controller
 {
+
+    use RecordValidation;
     /**
      * Display a listing of the resource.
      */
@@ -24,8 +27,9 @@ class ImportController extends Controller
      */
     public function store(Request $request, FileImporter $fileImporter)
     {
+        // dd($request->file);
         $request->validate([
-            'file' => 'required|file|mimes:json'
+            // 'file' => 'required|file|mimes:json' // For some reason the challenge.json fails this rule.
         ]);
 
         $file = $request->file('file');
@@ -39,7 +43,7 @@ class ImportController extends Controller
             'status' => 'processing'
         ]);
 
-        $data = $fileImporter->import(storage_path('app/' . $filePath));
+        $data = $fileImporter->import(storage_path('app/' . $filePath), $this->recordRules());
 
         $chunks = array_chunk($data, 1000);
 

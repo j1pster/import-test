@@ -45,7 +45,6 @@
 
         let files = [...e.dataTransfer.files];
 
-        debugger;
         if (props.fileTypes.length > 0) {
             const allowedFiles = files.filter(file => {
                 return props.fileTypes.includes(file.type);
@@ -73,6 +72,7 @@
     function formatFiles(files) {
         return files.map(file => {
             return {
+                file: file,
                 name: file.name,
                 type: file.type,
                 size: formattedSize(file.size, 2),
