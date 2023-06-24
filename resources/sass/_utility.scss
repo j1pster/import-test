@@ -1,0 +1,71 @@
+/* utilities */
+.u-invisible,
+.u-hidden {
+    opacity: 0;
+}
+
+.u-extra-hidden {
+    opacity: 1;
+    visibility: hidden;
+}
+
+.u-align-center {
+    text-align: center;
+}
+.u-align-left {
+    text-align: left;
+}
+.u-align-right {
+    text-align: right;
+}
+
+.u-overflow {
+    overflow: hidden;
+}
+
+.u-truncate {
+    // Add max-width
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.u-disabled {
+    cursor: not-allowed
+}
+
+.u-visually-hidden { /* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.u-zz-top {
+    z-index: 999;
+}
+
+.u-succes {
+    color: $c-green;
+
+    &:hover {
+        color: $c-green-dark;
+    }
+}
+
+.u-warning {
+    color: $c-yellow;
+
+    &:hover {
+        color: $c-yellow-dark;
+    }
+}
+
+.u-danger {
+    color: $c-red;
+
+    &:hover {
+        color: $c-red-dark;
+    }
+}
