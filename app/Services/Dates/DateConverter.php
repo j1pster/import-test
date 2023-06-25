@@ -8,7 +8,14 @@ use Illuminate\Support\Carbon;
 
 class DateConverter
 {
-    public static function convertToDateTime($dateString)
+
+    /**
+     * Convert a date in unknown format to a Carbon instance.
+     * 
+     * @param string $dateString
+     * @return Carbon|null
+     */
+    public static function convertToDateTime($dateString): ?Carbon
     {
         try {
             return Carbon::parse($dateString);

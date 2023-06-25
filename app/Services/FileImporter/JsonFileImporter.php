@@ -8,7 +8,15 @@ use Illuminate\Support\Facades\Validator;
 class JsonFileImporter implements FileImporterInterface
 {
 
-    public function import(string $filePath, array $rules): array
+    /**
+     * {@inheritdoc}
+     * 
+     * Get the contents from the file path and decode them as JSON.
+     * 
+     * @throws \InvalidArgumentException when the file is empty or not valid JSON.
+     * 
+     */
+    public function import(string $filePath): array
     {
         $file = file_get_contents($filePath, 'r');
         $data = json_decode($file, true);
@@ -17,14 +25,18 @@ class JsonFileImporter implements FileImporterInterface
             throw new \InvalidArgumentException('Invalid JSON file.');
         }
 
-        $this->validate($data, $rules);
-
         return $data ?? [];
     }
 
     /**
-     * Validate the first row of the import against the specified rules, 
-     * to check if the structure is correct. 
+     * {@inheritdoc}
+     * 
+     * Validate the first row of the imported JSON data.
+     * This is to ensure that the data is in the correct format before continuing.
+     * 
+     * @throws \InvalidArgumentException
+     * @throws \Illuminate\Validation\ValidationException
+     * 
      */
     public function validate(array $data, array $rules): void
     {   

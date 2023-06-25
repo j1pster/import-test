@@ -25,7 +25,11 @@ class ImportController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Save the uploaded file to storage and dispatch a batch job to process the data.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Contracts\FileImporterInterface $fileImporter
+     * 
      */
     public function store(Request $request, FileImporterInterface $fileImporter)
     {
@@ -48,7 +52,9 @@ class ImportController extends Controller
         $processRecords = new ProcessRecords();
         $rules = $processRecords->rules();
 
-        $data = $fileImporter->import(storage_path('app/' . $filePath), $rules);
+        $data = $fileImporter->import(storage_path('app/' . $filePath));
+
+        $fileImporter->validate($data, $rules);
 
         $batch = Bus::batch([
             new LoadProcessBatch($import, $data, $processRecords),
