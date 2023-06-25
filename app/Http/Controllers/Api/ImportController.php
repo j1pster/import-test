@@ -43,18 +43,18 @@ class ImportController extends Controller
         $fileName = $file->getClientOriginalName() . '-' . time() . '.' . $file->getClientOriginalExtension();
         $filePath = $file->storeAs($folderPath, $fileName);
 
-        $import = Import::create([
-            'name' => $file->getClientOriginalName(),
-            'path' => $filePath,
-            'status' => 'processing'
-        ]);
-
         $processRecords = new ProcessRecords();
         $rules = $processRecords->rules();
 
         $data = $fileImporter->import(storage_path('app/' . $filePath));
 
         $fileImporter->validate($data, $rules);
+
+        $import = Import::create([
+            'name' => $file->getClientOriginalName(),
+            'path' => $filePath,
+            'status' => 'processing'
+        ]);
 
         $batch = Bus::batch([
             new LoadProcessBatch($import, $data, $processRecords),

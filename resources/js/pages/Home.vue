@@ -95,10 +95,9 @@
                 file.messageType = 'success';
                 imports.value.push(response.data);
                 console.log(response);
-            }).catch(error => {
-                file.message = 'Failed to upload'
+            }).catch(({ response }) => {
+                file.message = response.data.message;
                 file.messageType = 'danger';
-                console.log(error);
             }).finally(() => {
                 file.uploading = false;
                 file.uploadedAlready = true;
