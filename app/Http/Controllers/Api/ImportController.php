@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Jobs\ProcessRecordsJob;
 use App\Http\Controllers\Controller;
 use App\Contracts\FileImporterInterface;
+use App\Jobs\LoadProcessBatch;
 use App\Services\ProcessData\ProcessRecords;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 
 class ImportController extends Controller
 {
@@ -46,12 +50,18 @@ class ImportController extends Controller
 
         $data = $fileImporter->import(storage_path('app/' . $filePath), $rules);
 
-        $chunks = array_chunk($data, 1000);
-
-        foreach ($chunks as $chunk) {
-
-            ProcessRecordsJob::dispatch($import, $chunk, $processRecords);
-        }
+        $batch = Bus::batch([
+            new LoadProcessBatch($import, $data, $processRecords),
+        ])
+        ->allowFailures()
+        ->then(function (Batch $batch) use ($import) {
+            $import->update(['status' => 'completed']);
+        })
+        ->catch(function (Batch $batch, \Throwable $e) use ($import) {
+            $import->update(['status' => 'failed']);
+            Log::error($e->getMessage());
+        })
+        ->dispatch();
 
         return $import;
     }
