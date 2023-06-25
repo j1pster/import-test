@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\ProcessImportData;
+use App\Jobs\ProcessRecordsJob;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Bus;
@@ -38,7 +38,7 @@ class UploadDataFileTest extends TestCase
 
         $response->assertStatus(201);
 
-        Queue::assertPushed(function (ProcessImportData $job) use ($response) {
+        Queue::assertPushed(function (ProcessRecordsJob $job) use ($response) {
             return $job->import->id === $response->json('id');
         });
     }

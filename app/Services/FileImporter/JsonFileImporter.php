@@ -2,10 +2,10 @@
 
 namespace App\Services\FileImporter;
 
-use App\Contracts\FileImporter;
+use App\Contracts\FileImporterInterface;
 use Illuminate\Support\Facades\Validator;
 
-class JsonFileImporter implements FileImporter
+class JsonFileImporter implements FileImporterInterface
 {
 
     public function import(string $filePath, array $rules): array

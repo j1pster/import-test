@@ -3,14 +3,14 @@
 namespace App\Providers;
 
 use App\Services\FileImporter\JsonFileImporter;
-use App\Contracts\FileImporter;
+use App\Contracts\FileImporterInterface;
 use Illuminate\Support\ServiceProvider;
 
 class FileImporterServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(FileImporter::class, function ($app) {
+        $this->app->bind(FileImporterInterface::class, function ($app) {
             $uploadedFile = $app->make('request')->file('file');
             $fileExtension = $uploadedFile->getClientOriginalExtension();
 

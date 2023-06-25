@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contracts\FileImporter;
-use App\Http\Controllers\Controller;
-use App\Jobs\ProcessImportData;
 use App\Models\Import;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Traits\RecordValidation;
+use App\Jobs\ProcessRecordsJob;
+use App\Http\Controllers\Controller;
+use App\Contracts\FileImporterInterface;
+use App\Services\ProcessData\ProcessRecords;
 
 class ImportController extends Controller
 {
 
-    use RecordValidation;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Import::all();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, FileImporter $fileImporter)
+    public function store(Request $request, FileImporterInterface $fileImporter)
     {
         // dd($request->file);
         $request->validate([
@@ -43,13 +41,16 @@ class ImportController extends Controller
             'status' => 'processing'
         ]);
 
-        $data = $fileImporter->import(storage_path('app/' . $filePath), $this->recordRules());
+        $processRecords = new ProcessRecords();
+        $rules = $processRecords->rules();
+
+        $data = $fileImporter->import(storage_path('app/' . $filePath), $rules);
 
         $chunks = array_chunk($data, 1000);
 
         foreach ($chunks as $chunk) {
 
-            ProcessImportData::dispatch($import, $chunk);
+            ProcessRecordsJob::dispatch($import, $chunk, $processRecords);
         }
 
         return $import;
@@ -60,7 +61,7 @@ class ImportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Import::findOrFail($id);
     }
 
     /**

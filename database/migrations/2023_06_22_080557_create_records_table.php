@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('account')->nullable();
             $table->string('address')->nullable();
-            $table->string('date_of_birth')->nullable();
+            $table->dateTime('date_of_birth')->nullable();
             $table->boolean('checked')->default(false);
             $table->string('email')->nullable();
             $table->string('interest')->nullable();
