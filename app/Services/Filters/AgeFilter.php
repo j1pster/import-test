@@ -10,12 +10,17 @@ class AgeFilter implements FilterInterface
     private int $minAge;
     private int $maxAge;
 
-    public function __construct($minAge, $maxAge)
+    public function __construct(int $minAge, int $maxAge)
     {
         $this->minAge = $minAge;
         $this->maxAge = $maxAge;
     }
 
+    /**
+     * {@inheritdoc}
+     * 
+     * Check if the date of birth is between the min and max age.
+     */
     public function passes(array $data): bool
     {
         $date = $data['date_of_birth'];

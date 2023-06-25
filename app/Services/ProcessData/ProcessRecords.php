@@ -7,6 +7,11 @@ use App\Services\Filters\AgeFilter;
 
 class ProcessRecords implements ProcessDataInterface
 {
+    /**
+     * {@inheritdoc}
+     * 
+     * The rules for validating Record data.
+     */
     public function rules(): array {
         return [
             'name' => 'required|string',
@@ -26,6 +31,11 @@ class ProcessRecords implements ProcessDataInterface
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     * 
+     * The filters to apply to Record data.
+     */
     public function filters(): array {
         return [
             new AgeFilter(18, 65),

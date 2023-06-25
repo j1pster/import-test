@@ -8,6 +8,14 @@ use Illuminate\Support\ServiceProvider;
 
 class FileImporterServiceProvider extends ServiceProvider
 {
+    /**
+     * Register the service provider.
+     * 
+     * Every time we need an implementation of FileImporterInterface
+     * we check the file extension of the uploaded file and bind the appropriate FileImporter.
+     * 
+     * @return void
+     */
     public function register()
     {
         $this->app->bind(FileImporterInterface::class, function ($app) {
