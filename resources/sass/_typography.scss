@@ -1,0 +1,159 @@
+$mainFont: "Nunito", arial, sans-serif;
+$baseFontSize: 16px;
+$baseFontWeight: 400;
+$mediumFontWeight: 500;
+$heavyFontWeight: 700;
+
+.t-body, body {
+    letter-spacing: 0;
+    color: $c-black;
+    font-family: $mainFont;
+    font-weight: $baseFontWeight;
+    @include font-size-rem(13);
+    line-height: 1.3846153846;
+    letter-spacing: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a, a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// HELPERS --------------------------------------
+
+.t-blue {
+    color: $c-blue;
+}
+
+.t-hover {
+    cursor: pointer;
+    &:focus, &:hover {
+        color: $c-blue;
+    }
+}
+
+.t-blue-hover {
+    &:focus, &:hover {
+        color: $c-blue-hover;
+    }
+}
+
+.t-black {
+    color: $c-black;
+}
+
+.t-grey {
+    color: $c-grey-dark;
+}
+
+.t-red,
+.t-danger {
+    color: $c-red;
+}
+
+.t-disabled {
+    color: $c-grey-dark
+}
+
+.t-family-book {
+    font-family: $mainFont;
+    font-weight: $baseFontWeight;
+}
+
+.t-family-medium {
+    font-family: $mainFont;
+    font-weight: $mediumFontWeight;
+}
+.t-family-heavy, strong {
+    font-weight: normal;
+    font-family: $mainFont;
+    font-weight: $heavyFontWeight;
+}
+
+// HEADERS --------------------------------------
+
+.t-page-title {
+    font-family: $mainFont;
+    font-weight: $baseFontWeight;
+    @include font-size-rem(24);
+    letter-spacing: 0;
+    color: #000;
+}
+
+.t-page-msg-title {
+    @extend .t-family-medium;
+    @extend .t-blue;
+    @include font-size-rem(24);
+}
+
+.t-small-title {
+    @include font-size-rem(11);
+    font-family: $mainFont;
+    font-weight: $mediumFontWeight;
+    text-transform: uppercase;
+}
+
+.t-modal-title {
+    font-family: $mainFont;
+    font-weight: $heavyFontWeight;
+    @include font-size-rem(36);
+    letter-spacing: 0.02916em;
+}
+
+.t-modal-subtitle {
+    @include font-size-rem(20);
+    letter-spacing: 0.0525em
+}
+
+// BODY -----------------------------------------
+
+.t-input {
+    @include font-size-rem(12);
+    font-family: Nunito;
+    letter-spacing: -0.047em;
+}
+
+.t-small {
+    @include font-size-rem(11);
+}
+
+.t-btn {
+    @extend .t-small;
+    font-family: $mainFont;
+    font-weight: $mediumFontWeight;
+    color: $c-white;
+    letter-spacing: 0;
+    line-height: 1;
+
+    &.t-blue {
+        @extend .t-blue
+    }
+
+    &.t-black {
+        @extend .t-black
+    }
+}
+
+.t-btn-big {
+    @extend .t-btn;
+    @include font-size-rem(13);
+    font-family: AvenirHeavy;
+}
+
+.t-tab {
+    letter-spacing: -0.019em;
+    &.active {
+        @extend .t-blue
+    }
+}
+
+
