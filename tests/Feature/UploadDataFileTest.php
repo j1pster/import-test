@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\ProcessRecordsJob;
+use App\Jobs\LoadProcessBatch;
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Bus;
@@ -34,12 +35,12 @@ class UploadDataFileTest extends TestCase
             'file' => $this->getValidUploadedFile()
         ]);
 
-        Queue::fake();
+        Bus::fake();
 
         $response->assertStatus(201);
 
-        Queue::assertPushed(function (ProcessRecordsJob $job) use ($response) {
-            return $job->import->id === $response->json('id');
+        Bus::assertBatched(function (PendingBatch $batch) {
+            return $batch->name === 'process-import';
         });
     }
 }

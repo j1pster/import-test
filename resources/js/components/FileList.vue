@@ -7,6 +7,7 @@
             <div v-for="(file, index) in props.files" class="file-list__item">
                 <span class="file-list__item-name t-body">{{ file.name }}</span>
                 <span class="file-list__item-size t-body t-small">{{ file.size }}</span>
+                <span v-if="file.message" class="file-list__message t-body t-small" :class="`u-${ file.messageType }`">{{ file.message }}</span>
                 <button class="file-list__remove t-button t-button--danger" @click="removeItem(index)">x</button>
             </div>
         </div>

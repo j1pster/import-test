@@ -19,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/import', [ImportController::class, 'store']);
+// Route::post('/import', [ImportController::class, 'store']);
+Route::apiResource('/import', ImportController::class)->except('destroy');

@@ -61,6 +61,7 @@ class ImportController extends Controller
             $import->update(['status' => 'failed']);
             Log::error($e->getMessage());
         })
+        ->name('process-import')
         ->dispatch();
 
         return $import;
