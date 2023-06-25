@@ -26,6 +26,7 @@ class FileImporterServiceProvider extends ServiceProvider
             switch ($fileExtension) {
                 case 'json':
                     return new JsonFileImporter();
+                // Example of how to add additional file types
                 //case 'csv':
                     // return CSV File Importer;
                 //case 'xls':
