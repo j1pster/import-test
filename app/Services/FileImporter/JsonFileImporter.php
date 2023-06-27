@@ -13,21 +13,15 @@ class JsonFileImporter implements FileImporterInterface
      * 
      * Get the contents from the file path and decode them as JSON.
      * 
-     * @throws \InvalidArgumentException when the file is empty or not valid JSON.
-     * 
      */
     public function import(string $filePath): array
     {
         $file = file_get_contents($filePath, 'r');
         $data = json_decode($file, true);
 
-        if($data === null) {
-            throw new \InvalidArgumentException('Invalid JSON file.');
-        }
-
         return $data ?? [];
     }
-
+    
     /**
      * {@inheritdoc}
      * 
@@ -40,11 +34,16 @@ class JsonFileImporter implements FileImporterInterface
      */
     public function validate(array $data, array $rules): void
     {   
+        if($data === null) {
+            throw new \InvalidArgumentException('Invalid JSON file.');
+        }
+
         $first = reset($data);
 
         if (!is_array($first)) {
             throw new \InvalidArgumentException('Invalid JSON file.');
         }
+
         Validator::make($first, $rules)->validate();
     }
 }

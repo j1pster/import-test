@@ -29,17 +29,18 @@ class UploadDataFileTest extends TestCase
     /**
      * @test
      */
-    public function uploading_a_valid_json_file_imports_content_to_the_database(): void
+    public function uploading_a_valid_json_file_dispatches_a_batch(): void
     {
+        $bus = Bus::fake();
+
         $response = $this->post('/api/import', [
             'file' => $this->getValidUploadedFile()
         ]);
 
-        Bus::fake();
-
         $response->assertStatus(201);
 
         Bus::assertBatched(function (PendingBatch $batch) {
+            dd($batch);
             return $batch->name === 'process-import';
         });
     }

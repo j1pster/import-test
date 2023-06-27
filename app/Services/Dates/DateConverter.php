@@ -20,6 +20,7 @@ class DateConverter
         try {
             return Carbon::parse($dateString);
         } catch (\Exception $e) {
+            // Add more formats here if needed. 
             $formats = [
                 'Y-m-d',
                 'Y/m/d',
